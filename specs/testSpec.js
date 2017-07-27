@@ -57,4 +57,16 @@ describe('BigMoney', () => {
   it('Minimal String', () => {
     expect(BigMoney.parse("4.00 USD").toMinimalString()).toEqual("4");
   });
+
+  it('Multiplication 2', () => {
+    expect(BigMoney.parse("4.063 USD").multiply(BigMoney.parse("30 USD")).toCurrencyString()).toEqual("121.80 USD");
+  });
+
+  it('Multiplication 3', () => {
+    expect(BigMoney.parse("4.063 USD").multiply(BigMoney.parse("30 CAD").amount.div(100)).toCurrencyString()).toEqual("121.80 USD");
+  });
+
+  it('Multiplication 4', () => {
+    expect(BigMoney.parse("4.063 USD").multiply(BigMoney.parse("30 CAD"), 'USD').toCurrencyString()).toEqual("121.80 USD");
+  });
 });

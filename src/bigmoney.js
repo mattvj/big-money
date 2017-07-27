@@ -16,7 +16,7 @@ function BigMoney(intAmount, currency) {
 BigMoney.prototype.add = function(value, currency = this.currency) {
   const valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
 
-  if(!checkValues(valueNumber, this)) {
+  if(!checkCurrencies(currency, this.currency)) {
     throw new Error('Invalid Number');
   }
 
@@ -26,7 +26,7 @@ BigMoney.prototype.add = function(value, currency = this.currency) {
 BigMoney.prototype.subtract = function(value, currency = this.currency) {
   const valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
 
-  if(!checkValues(valueNumber, this)) {
+  if(!checkCurrencies(currency, this.currency)) {
     throw new Error('Invalid Number');
   }
 
@@ -36,7 +36,7 @@ BigMoney.prototype.subtract = function(value, currency = this.currency) {
 BigMoney.prototype.multiply = function(value, currency = this.currency) {
   const valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
 
-  if(!checkValues(valueNumber, this)) {
+  if(!checkCurrencies(currency, this.currency)) {
     throw new Error('Invalid Number');
   }
 
@@ -49,7 +49,7 @@ BigMoney.prototype.multiply = function(value, currency = this.currency) {
 BigMoney.prototype.divide = function(value, currency = this.currency) {
   const valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
 
-  if(!checkValues(valueNumber, this)) {
+  if(!checkCurrencies(currency, this.currency)) {
     throw new Error('Invalid Number');
   }
 
@@ -62,7 +62,7 @@ BigMoney.prototype.divide = function(value, currency = this.currency) {
 BigMoney.prototype.compare = function(value, currency = this.currency) {
   const valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
 
-  if(!checkValues(valueNumber, this)) {
+  if(!checkCurrencies(currency, this.currency)) {
     throw new Error('Invalid Number');
   }
 
@@ -85,6 +85,10 @@ BigMoney.prototype.toString = function() {
 
 BigMoney.prototype.toDecimal = function() {
   return +this.toString();
+};
+
+BigMoney.prototype.toBigDecimal = function() {
+  return this.amount;
 };
 
 BigMoney.prototype.toCurrencyString = function() {
@@ -132,9 +136,17 @@ BigMoney.parse = function(decimal, currency) {
   return new BigMoney(amount, currency);
 };
 
-const checkValues = function(val1, val2) {
-  if(val1.getCurrencyCode() !== val2.getCurrencyCode()) {
-    throw new Error('Currencies don\'t match [' + val1.getCurrencyCode() + '] [' + val2.getCurrencyCode() + ']');
+const checkCurrencies = function(currency1, currency2) {
+  if (typeof currency1 !== 'string') {
+    currency1 = currency1.code;
+  }
+
+  if (typeof currency2 !== 'string') {
+    currency2 = currency2.code;
+  }
+
+  if(currency1 !== currency2) {
+    throw new Error('Currencies don\'t match [' + currency1 + '] [' + currency2 + ']');
   }
 
   return true;
