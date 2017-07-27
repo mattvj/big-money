@@ -1,17 +1,26 @@
-import MockDate from 'mockdate';
-import BigMoney from '../src/bigmoney';
+'use strict';
 
-describe('BigMoney', () => {
-  beforeEach(() => {
-    MockDate.set(1434319925275);
+var _mockdate = require('mockdate');
+
+var _mockdate2 = _interopRequireDefault(_mockdate);
+
+var _bigmoney = require('../src/bigmoney');
+
+var _bigmoney2 = _interopRequireDefault(_bigmoney);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+describe('BigMoney', function () {
+  beforeEach(function () {
+    _mockdate2.default.set(1434319925275);
   });
 
-  it('Should show USD money 50 cents', () => {
-    expect(new BigMoney(50, 'USD').toString()).toEqual("0.50");
+  it('Should show USD money 50 cents', function () {
+    expect(new _bigmoney2.default(50, 'USD').toString()).toEqual("0.50");
   });
 
-  it('Should show custom currency', () => {
-    const value = new BigMoney(50, {
+  it('Should show custom currency', function () {
+    var value = new _bigmoney2.default(50, {
       "symbol": "RR",
       "name": "RAD Dollar",
       "symbol_native": "$",
@@ -24,16 +33,16 @@ describe('BigMoney', () => {
     expect(value).toMatch("0.0050 RAD");
   });
 
-  it('Half even rounding 1', () => {
-    expect(BigMoney.parse("3.943 USD").toString()).toEqual("3.94");
+  it('Half even rounding 1', function () {
+    expect(_bigmoney2.default.parse("3.943 USD").toString()).toEqual("3.94");
   });
 
-  it('Half even rounding 2', () => {
-    expect(BigMoney.parse("3.947 USD").toString()).toEqual("3.95");
+  it('Half even rounding 2', function () {
+    expect(_bigmoney2.default.parse("3.947 USD").toString()).toEqual("3.95");
   });
 
-  it('New customer currency', () => {
-    BigMoney.addCurrency({
+  it('New customer currency', function () {
+    _bigmoney2.default.addCurrency({
       "symbol": "MM",
       "name": "MMM Dollar",
       "symbol_native": "$",
@@ -43,19 +52,19 @@ describe('BigMoney', () => {
       "name_plural": "MMM dollars"
     });
 
-    expect(BigMoney.parse("3.94557 MMM").toCurrencyString()).toEqual("3.946 MMM");
+    expect(_bigmoney2.default.parse("3.94557 MMM").toCurrencyString()).toEqual("3.946 MMM");
   });
 
-  it('Multiplication', () => {
-    expect(BigMoney.parse("4.063 USD").multiply(30).toCurrencyString()).toEqual("121.80 USD");
+  it('Multiplication', function () {
+    expect(_bigmoney2.default.parse("4.063 USD").multiply(30).toCurrencyString()).toEqual("121.80 USD");
   });
 
-  it('Division', () => {
-    expect(BigMoney.parse("4.063 USD").divide("1.23 USD").toCurrencyString()).toEqual("3.30 USD");
+  it('Division', function () {
+    expect(_bigmoney2.default.parse("4.063 USD").divide("1.23 USD").toCurrencyString()).toEqual("3.30 USD");
   });
 
-  it('Minimal String', () => {
-    expect(BigMoney.parse("4.00 USD").toMinimalString()).toEqual("4");
+  it('Minimal String', function () {
+    expect(_bigmoney2.default.parse("4.00 USD").toMinimalString()).toEqual("4");
   });
 });
 //# sourceMappingURL=testSpec.js.map

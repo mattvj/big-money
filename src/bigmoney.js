@@ -14,7 +14,7 @@ function BigMoney(intAmount, currency) {
 }
 
 BigMoney.prototype.add = function(value, currency = this.currency) {
-  const valueNumber = BigMoney.parse(value, currency);
+  const valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
 
   if(!checkValues(valueNumber, this)) {
     throw new Error('Invalid Number');
@@ -24,7 +24,7 @@ BigMoney.prototype.add = function(value, currency = this.currency) {
 };
 
 BigMoney.prototype.subtract = function(value, currency = this.currency) {
-  const valueNumber = BigMoney.parse(value, currency);
+  const valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
 
   if(!checkValues(valueNumber, this)) {
     throw new Error('Invalid Number');
@@ -34,7 +34,7 @@ BigMoney.prototype.subtract = function(value, currency = this.currency) {
 };
 
 BigMoney.prototype.multiply = function(value, currency = this.currency) {
-  const valueNumber = BigMoney.parse(value, currency);
+  const valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
 
   if(!checkValues(valueNumber, this)) {
     throw new Error('Invalid Number');
@@ -47,7 +47,7 @@ BigMoney.prototype.multiply = function(value, currency = this.currency) {
 };
 
 BigMoney.prototype.divide = function(value, currency = this.currency) {
-  const valueNumber = BigMoney.parse(value, currency);
+  const valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
 
   if(!checkValues(valueNumber, this)) {
     throw new Error('Invalid Number');
@@ -60,7 +60,7 @@ BigMoney.prototype.divide = function(value, currency = this.currency) {
 };
 
 BigMoney.prototype.compare = function(value, currency = this.currency) {
-  const valueNumber = BigMoney.parse(value, currency);
+  const valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
 
   if(!checkValues(valueNumber, this)) {
     throw new Error('Invalid Number');
