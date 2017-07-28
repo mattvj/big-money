@@ -11,7 +11,7 @@ describe('BigMoney', () => {
   });
 
   it('Should show custom currency', () => {
-      const value = BigMoney.fromPrecision(50, {
+      const value = BigMoney.fromCents(50, {
         "symbol": "RR",
         "name": "RAD Dollar",
         "symbol_native": "$",
