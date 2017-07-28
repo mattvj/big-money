@@ -3,12 +3,12 @@ import Big from 'big.js';
 
 const extraCurrencies = {};
 
-function BigMoney(intAmount, currency) {
+function BigMoney(amount, currency) {
     if(typeof currency === 'string') {
       currency = BigMoney.getCurrency(currency);
     }
 
-    this.amount = Big(intAmount);
+    this.amount = Big(amount);
     this.currency = currency;
     Object.freeze(this);
 }
@@ -34,16 +34,13 @@ BigMoney.prototype.subtract = function(value, currency = this.currency) {
 };
 
 BigMoney.prototype.multiply = function(value, currency = this.currency) {
-  const valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
+  let valueNumber = value instanceof BigMoney ? value : BigMoney.parse(value, currency);
 
   if(!checkCurrencies(currency, this.currency)) {
     throw new Error('Invalid Number');
   }
 
-  const power = Big(10).pow(this.currency.decimal_digits);
-  const amount = valueNumber.amount.div(power);
-
-  return new BigMoney(this.amount.mul(amount), this.currency);
+  return new BigMoney(this.amount.mul(valueNumber.amount), this.currency);
 };
 
 BigMoney.prototype.divide = function(value, currency = this.currency) {
@@ -53,10 +50,7 @@ BigMoney.prototype.divide = function(value, currency = this.currency) {
     throw new Error('Invalid Number');
   }
 
-  const power = Big(10).pow(this.currency.decimal_digits);
-  const amount = valueNumber.amount.div(power);
-
-  return new BigMoney(this.amount.div(amount), this.currency);
+  return new BigMoney(this.amount.div(valueNumber.amount), this.currency);
 };
 
 BigMoney.prototype.compare = function(value, currency = this.currency) {
@@ -78,9 +72,7 @@ BigMoney.prototype.getAmount = function() {
 };
 
 BigMoney.prototype.toString = function() {
-  const power = Big(10).pow(this.currency.decimal_digits);
-  let amount = this.amount.div(power);
-  return amount.round(this.currency.decimal_digits, Big.ROUND_HALF_EVEN).toFixed(this.currency.decimal_digits);
+  return this.amount.toFixed(this.currency.decimal_digits);
 };
 
 BigMoney.prototype.toDecimal = function() {
@@ -100,9 +92,7 @@ BigMoney.prototype.toLocaleString = function(locale = 'en-US') {
 };
 
 BigMoney.prototype.toMinimalString = function() {
-  const power = Big(10).pow(this.currency.decimal_digits);
-  let amount = this.amount.div(power);
-  return amount.round(this.currency.decimal_digits, Big.ROUND_HALF_EVEN).toString();
+  return this.amount.round(this.currency.decimal_digits, Big.ROUND_HALF_EVEN).toString();
 };
 
 BigMoney.addCurrency = function(currency) {
@@ -129,9 +119,24 @@ BigMoney.parse = function(decimal, currency) {
   }
 
   let amount = Big(decimal);
+  amount = amount.round(currency.decimal_digits, Big.ROUND_HALF_EVEN);
+
+  return new BigMoney(amount, currency);
+};
+
+BigMoney.toPrecision = function(integer, currency) {
+  if (typeof currency === 'string') {
+    currency = BigMoney.getCurrency(currency);
+  }
+
+  if (!currency) {
+    throw new Error('Invalid currency');
+  }
+
+  let amount = Big(integer);
   const power = Big(10).pow(currency.decimal_digits);
-  amount = amount.mul(power);
-  amount = amount.round(0, Big.ROUND_HALF_EVEN);
+
+  amount = amount.div(power).round(currency.decimal_digits, Big.ROUND_HALF_EVEN);
 
   return new BigMoney(amount, currency);
 };

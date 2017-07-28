@@ -1,7 +1,7 @@
 {
   "name": "big-money",
   "description": "JavaScript implementation of safe money operations.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "lib/bigmoney.js",
   "author": {
     "name": "Matt Johnson",
