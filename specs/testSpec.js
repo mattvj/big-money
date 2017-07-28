@@ -7,11 +7,11 @@ describe('BigMoney', () => {
   });
 
   it('Should show USD money 50 cents', () => {
-    expect(BigMoney.toPrecision(50, 'USD').toString()).toEqual("0.50");
+    expect(BigMoney.fromCents(50, 'USD').toString()).toEqual("0.50");
   });
 
   it('Should show custom currency', () => {
-      const value = BigMoney.toPrecision(50, {
+      const value = BigMoney.fromPrecision(50, {
         "symbol": "RR",
         "name": "RAD Dollar",
         "symbol_native": "$",
@@ -68,5 +68,9 @@ describe('BigMoney', () => {
 
   it('Multiplication 4', () => {
     expect(BigMoney.parse("4.063 USD").multiply(BigMoney.parse("30 CAD"), 'USD').toCurrencyString()).toEqual("121.80 USD");
+  });
+
+  it('No precision', () => {
+    expect(BigMoney.parse("4.063 USD").multiply(BigMoney.parse("30 CAD"), 'USD').toCents()).toEqual("12180");
   });
 });

@@ -83,6 +83,12 @@ BigMoney.prototype.toBigDecimal = function() {
   return this.amount;
 };
 
+BigMoney.prototype.toCents = function() {
+  const power = Big(10).pow(this.currency.decimal_digits);
+  const noPrecision = this.amount.mul(power);
+  return noPrecision.toFixed(0);
+};
+
 BigMoney.prototype.toCurrencyString = function() {
   return this.toString() + " " + this.currency.code;
 };
@@ -124,7 +130,7 @@ BigMoney.parse = function(decimal, currency) {
   return new BigMoney(amount, currency);
 };
 
-BigMoney.toPrecision = function(integer, currency) {
+BigMoney.fromCents = function(integer, currency) {
   if (typeof currency === 'string') {
     currency = BigMoney.getCurrency(currency);
   }
