@@ -139,7 +139,7 @@ BigMoney.fromCents = function(integer, currency) {
     throw new Error('Invalid currency');
   }
 
-  let amount = Big(integer);
+  let amount = Big(integer || 0);
   const power = Big(10).pow(currency.decimal_digits);
 
   amount = amount.div(power).round(currency.decimal_digits, Big.ROUND_HALF_EVEN);
